@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://7g43dyb6ic83"]
+
+[ext_resource type="Script" uid="uid://b1w547bf0aebg" path="res://james's-scripts/scripts/player/player_controller.gd" id="1_qhcvo"]
+[ext_resource type="Script" uid="uid://dtqccsf5r5kwk" path="res://james's-scripts/scripts/player/camera_component.gd" id="2_opmr3"]
+[ext_resource type="Script" uid="uid://dp1igad4x5t0" path="res://james's-scripts/scripts/player/raycast_component.gd" id="3_32ysj"]
+[ext_resource type="Script" uid="uid://b5bho16rjtajh" path="res://james's-scripts/scripts/state_machine/state_machine.gd" id="4_fglg0"]
+[ext_resource type="Script" uid="uid://c2w2rkuop1d06" path="res://james's-scripts/scripts/player/movement_states/walking_state.gd" id="5_m7s1u"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0yogj"]
+radius = 0.2
+height = 1.7
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_qhcvo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("CapsuleShape3D_0yogj")
+
+[node name="CameraComponent" type="Camera3D" parent="." node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("2_opmr3")
+player = NodePath("..")
+metadata/_custom_type_script = "uid://dtqccsf5r5kwk"
+
+[node name="RayCastComponent" type="RayCast3D" parent="CameraComponent" node_paths=PackedStringArray("player")]
+target_position = Vector3(0, 0, -1)
+script = ExtResource("3_32ysj")
+player = NodePath("../..")
+metadata/_custom_type_script = "uid://dp1igad4x5t0"
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state")]
+script = ExtResource("4_fglg0")
+current_state = NodePath("Walking")
+metadata/_custom_type_script = "uid://b5bho16rjtajh"
+
+[node name="Walking" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "camera_component", "ray_component")]
+script = ExtResource("5_m7s1u")
+player = NodePath("../..")
+camera_component = NodePath("../../CameraComponent")
+ray_component = NodePath("../../CameraComponent/RayCastComponent")
