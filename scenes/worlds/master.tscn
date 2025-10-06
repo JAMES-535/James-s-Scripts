@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0f1gs3oqwkrl"]
+
+[ext_resource type="PackedScene" uid="uid://bis5gp4nrlbtb" path="res://james's-scripts/scenes/managers/transition_manager.tscn" id="1_gi3in"]
+[ext_resource type="PackedScene" uid="uid://b2610n74o4ayx" path="res://scenes/node_3d.tscn" id="2_k7ccj"]
+
+[node name="Master" type="Node"]
+
+[node name="TransitionManager" parent="." node_paths=PackedStringArray("world_2d", "world_3d") instance=ExtResource("1_gi3in")]
+world_2d = NodePath("../2DWorld")
+world_3d = NodePath("../3DWorld")
+current_scene = ExtResource("2_k7ccj")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="2DWorld" type="Node2D" parent="."]
+
+[node name="3DWorld" type="Node3D" parent="."]
